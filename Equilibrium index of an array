@@ -1,0 +1,41 @@
+Problem : Given an array arr[] of size n, return an equilibrium index (if any) or -1 if no equilibrium index exists. The equilibrium index of an array is an index such that 
+          the sum of elements at lower indexes equals the sum of elements at higher indexes.
+          Note: Return equilibrium point in 1-based indexing. Return -1 if no such point exists. 
+          
+          Examples:
+          Input: arr[] = {-7, 1, 5, 2, -4, 3, 0}
+          Output: 4
+          Explanation: In 1-based indexing, 4 is an equilibrium index, because: arr[1] + arr[2] + arr[3] = arr[5] + arr[6] + arr[7]
+
+Solution : 
+
+int equilibriumPoint(vector<long long>& arr)
+{
+    int n = arr.size();
+    if (n == 1)
+        return 1;
+    int prefix[n] = { 0 };
+    int suffix[n] = { 0 };
+
+    // Initialize the ends of prefix and suffix array
+    prefix[0] = arr[0];
+    suffix[n - 1] = arr[n - 1];
+
+    // Calculate prefix sum for all indices
+    for (int i = 1; i < n; i++) {
+        prefix[i] = prefix[i - 1] + arr[i];
+    }
+
+    // Calculating suffix sum for all indices
+    for (int i = n - 2; i >= 0; i--) {
+        suffix[i] = suffix[i + 1] + arr[i];
+    }
+
+    // Checking if prefix sum is equal to suffix sum
+    for (int i = 0; i < n; i++) {
+        if (prefix[i] == suffix[i]) {
+            return i + 1;
+        }
+    }
+    return -1;
+}
